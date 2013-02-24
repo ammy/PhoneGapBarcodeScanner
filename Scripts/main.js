@@ -1,7 +1,8 @@
 ﻿var application = {
+    urlRegex: '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
     init: function () {
         $('#status').text('Device Ready! Go for it.');
-        $('#btnScan').on('click', scan());
+        $('#btnScan').on('click', this.scan());
     },
     scan: function() {
         console.log('scanning');
@@ -11,10 +12,11 @@
                     "text: " + args.text + "\n" +
                     "format: " + args.format + "\n" +
                     "cancelled: " + args.cancelled + "\n");
-
-                //                if (args.format == "QR_CODE") {
-                //                    window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
-                //                }
+                
+                //match a url
+                if (args.format == "QR_CODE" && args.text.match(urlRegex)) {
+                    window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
+                }
 
                 $('#scanResults').html(args.toJSON());
             }, function(error) {
