@@ -2,7 +2,7 @@
     urlRegex: '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
     init: function () {
         $('#status').text('Device Ready! Go for it.');
-        $('#btnScan').on('click', this.scan());
+        $('#btnScan').bind('click', this.scan);
     },
     scan: function() {
         console.log('scanning');
@@ -18,7 +18,7 @@
                     window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
                 }
 
-                $('#scanResults').html(args.toJSON());
+                $('#scanResults').html(args.text);
             }, function(error) {
                 alert("Scanning failed: " + error);
             });
