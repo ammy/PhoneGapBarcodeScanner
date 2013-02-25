@@ -22,8 +22,6 @@
                 }
                 alert(args.text);
                 $('#scanResults').text(args.text);
-            }, function(error) {
-                alert("Scanning failed: " + error);
             });
         } catch (ex) {
             alert(ex.message);
