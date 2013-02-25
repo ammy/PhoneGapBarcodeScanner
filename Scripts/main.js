@@ -36,6 +36,6 @@
         }
     },
     goToUrl: function() {
-        window.plugins.childBrowser.showWebPage($('#scanResults').html(), { showLocationBar: false });
+        window.plugins.childBrowser.openExternal($('#scanResults').html());
     }
 };
