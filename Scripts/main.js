@@ -1,11 +1,14 @@
 ﻿var application = {
     urlRegex: '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
     init: function () {
+        $('#goToUrl').disable();
         $('#status').text('Device Ready! Go for it.');
-        $('#btnScan').bind('click', this.scan);
+        $('#btnScan').bind('tap', this.scan);
+        $('#goToUrl').bind('tap', this.goToUrl);
     },
     scan: function() {
         console.log('scanning');
+        $('#goToUrl').disable();
         try {
             window.plugins.barcodeScanner.scan(function(args) {
                 console.log("Scanner result: \n" +
@@ -15,15 +18,18 @@
                 
                 //match a url
                 if (args.format == "QR_CODE" && args.text.match(urlRegex)) {
-                    window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
+                    $('#goToUrl').enable();
                 }
-
-                $('#scanResults').html(args.text);
+                alert(args.text);
+                $('#scanResults').text(args.text);
             }, function(error) {
                 alert("Scanning failed: " + error);
             });
         } catch (ex) {
             alert(ex.message);
         }
+    },
+    goToUrl:function(){
+        window.plugins.childBrowser.showWebPage($('#scanResults').html(), { showLocationBar: false });
     }
 };
