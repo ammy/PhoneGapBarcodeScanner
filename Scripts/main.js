@@ -1,5 +1,5 @@
 ﻿var application = {
-    urlRegex: '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+    urlRegex: '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.\?-#=_]*)*\/?$/',
     isScanning: false,
     init: function () {
         console.log("init");
@@ -17,6 +17,7 @@
                 window.plugins.barcodeScanner.scan(function(result) {
                     $('#scanResults').text(result.text);
                     //match a url
+                    
                     if (result.format == "QR_CODE" && result.text.match(that.urlRegex)) {
                         $('#goToUrl').buttonMarkup('enable');
                         $('#home').trigger('refresh');
