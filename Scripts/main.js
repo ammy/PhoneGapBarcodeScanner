@@ -1,26 +1,27 @@
 ﻿var application = {
-    urlRegex: '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.\?-#=_]*)*\/?$/',
     isScanning: false,
-    init: function () {
+    init: function() {
         console.log("init");
         $('#status').text('Device Ready! Go for it.');
         $('#btnScan').on('tap', this.scan);
         $('#goToUrl').on('tap', this.goToUrl);
     },
-    scan: function () {
+    scan: function() {
         var that = this;
         console.log('scanning');
-        $('#goToUrl').buttonMarkup('disable');
+        $('#goToUrl').addClass('ui-disabled');
         try {
             if (window.plugins && window.plugins.barcodeScanner && !this.isScanning) {
                 that.isScanning = true;
                 window.plugins.barcodeScanner.scan(function(result) {
                     $('#scanResults').text(result.text);
                     //match a url
-                    
-                    if (result.format == "QR_CODE" && result.text.match(that.urlRegex)) {
-                        $('#goToUrl').buttonMarkup('enable');
-                        $('#home').trigger('refresh');
+                    var match = result.text.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.\?\-#=_]*)*\/?$/);
+                    console.log(match);
+                    $('#matchResult').text("Format: " + result.format + ". Match: " + match.length);
+                    if (result.format == "QR_CODE" && match) {
+                        console.log('Matched');
+                        $('#goToUrl').removeClass('ui-disabled');
                     }
                     that.isScanning = false;
                 }, function(error) {
@@ -34,7 +35,7 @@
             alert(ex.message);
         }
     },
-    goToUrl:function(){
+    goToUrl: function() {
         window.plugins.childBrowser.showWebPage($('#scanResults').html(), { showLocationBar: false });
     }
 };
