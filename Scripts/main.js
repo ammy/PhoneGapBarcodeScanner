@@ -19,6 +19,7 @@
                     //match a url
                     if (result.format == "QR_CODE" && result.text.match(that.urlRegex)) {
                         $('#goToUrl').buttonMarkup('enable');
+                        $('#home').trigger('refresh');
                     }
                     that.isScanning = false;
                 }, function(error) {
