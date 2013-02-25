@@ -11,9 +11,10 @@
         console.log('scanning');
         $('#goToUrl').addClass('ui-disabled');
         try {
-            if (window.plugins && window.plugins.barcodeScanner && !this.isScanning) {
+            if (window.plugins && window.plugins.barcodeScanner && !that.isScanning) {
                 that.isScanning = true;
                 window.plugins.barcodeScanner.scan(function(result) {
+                    that.isScanning = false;
                     $('#scanResults').text(result.text);
                     //match a url
                     var match = result.text.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.\?\-#=_]*)*\/?$/);
@@ -23,10 +24,9 @@
                         console.log('Matched');
                         $('#goToUrl').removeClass('ui-disabled');
                     }
-                    that.isScanning = false;
                 }, function(error) {
-                    $('#scanResults').text("Scanning failed: " + error);
                     that.isScanning = false;
+                    $('#scanResults').text("Scanning failed: " + error);
                 });
             } else {
                 $('#scanResults').text("No scanner plugin available");
